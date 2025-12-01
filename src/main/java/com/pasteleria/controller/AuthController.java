@@ -34,12 +34,12 @@ public class AuthController {
 
     @PostMapping("/register")
     @Operation(summary = "Registrar usuario", description = "Registra un nuevo usuario en el sistema")
-    public ResponseEntity<User> register(@RequestBody User user) {
+    public ResponseEntity<?> register(@RequestBody User user) {
         try {
             User registeredUser = userService.registerUser(user);
             return ResponseEntity.ok(registeredUser);
         } catch (RuntimeException e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -52,6 +52,16 @@ public class AuthController {
             return ResponseEntity.ok(user);
         } catch (Exception e) {
             return ResponseEntity.status(404).build();
+        }
+    }
+    @PostMapping("/reset-password")
+    @Operation(summary = "Restablecer contraseña", description = "Restablece la contraseña de un usuario dado su correo")
+    public ResponseEntity<?> resetPassword(@RequestBody com.pasteleria.dto.ResetPasswordRequest request) {
+        try {
+            userService.resetPassword(request.getEmail(), request.getPassword());
+            return ResponseEntity.ok().build();
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }

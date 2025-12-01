@@ -137,4 +137,11 @@ public class UserService {
                 user.getAvatarUrl(),
                 user.getActivo());
     }
+    public void resetPassword(String email, String newPassword) {
+        User user = userRepository.findByCorreo(email)
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    }
 }
