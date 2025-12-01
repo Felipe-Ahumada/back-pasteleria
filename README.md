@@ -60,6 +60,7 @@ http://localhost:8080/doc/swagger-ui.html
 - `POST /api/v1/auth/login` - Iniciar sesión
 - `POST /api/v1/auth/register` - Registrar usuario
 - `GET /api/v1/auth/me` - Obtener usuario actual (requiere token)
+- `POST /api/v1/auth/reset-password` - Restablecer contraseña
 
 ### Productos (Lectura pública, escritura protegida)
 
@@ -90,6 +91,29 @@ http://localhost:8080/doc/swagger-ui.html
 - `GET /api/v1/users/{id}` - Obtener usuario (ADMIN o propio)
 - `PUT /api/v1/users/{id}` - Actualizar usuario (ADMIN o propio)
 - `DELETE /api/v1/users/{id}` - Desactivar usuario (ADMIN)
+
+### Blog (Público/Autenticado)
+
+- `GET /api/v1/blogs` - Listar todos los blogs
+- `GET /api/v1/blogs/{id}` - Obtener blog por ID
+- `POST /api/v1/blogs` - Crear blog (Autenticado)
+- `PUT /api/v1/blogs/{id}/status` - Actualizar estado (ADMIN/SUPERADMIN)
+- `DELETE /api/v1/blogs/{id}` - Eliminar blog (ADMIN/SUPERADMIN)
+- `POST /api/v1/blogs/{id}/like` - Dar/Quitar like (Autenticado)
+- `GET /api/v1/blogs/{id}/likes/count` - Contar likes
+- `GET /api/v1/blogs/{id}/likes/status` - Verificar si usuario dio like (Autenticado)
+
+### Comentarios (Público/Autenticado)
+
+- `GET /api/v1/comentarios` - Listar todos los comentarios
+- `GET /api/v1/comentarios/blog/{blogId}` - Comentarios por blog
+- `POST /api/v1/comentarios` - Crear comentario
+- `DELETE /api/v1/comentarios/{id}` - Eliminar comentario (ADMIN/SUPERADMIN)
+
+### Ubicaciones (Público)
+
+- `GET /api/v1/locations/regions` - Listar regiones
+- `GET /api/v1/locations/regions/{codigo}/comunas` - Listar comunas por región
 
 ## Roles y Permisos
 
@@ -132,7 +156,11 @@ src/main/java/com/pasteleria/
 │   ├── ProductoController.java     # CRUD de productos
 │   ├── CategoriaController.java    # CRUD de categorías
 │   ├── PedidoController.java       # Gestión de pedidos
-│   └── UserController.java         # Gestión de usuarios
+│   ├── UserController.java         # Gestión de usuarios
+│   ├── BlogController.java         # Gestión de blogs
+│   ├── BlogLikeController.java     # Gestión de likes en blogs
+│   ├── ComentarioController.java   # Gestión de comentarios
+│   └── LocationController.java     # Gestión de regiones y comunas
 ├── dto/
 │   ├── LoginRequest.java           # DTO para login
 │   ├── LoginResponse.java          # DTO de respuesta login
@@ -199,14 +227,3 @@ Las principales configuraciones están en `src/main/resources/application.proper
 **Error: Unable to connect to MySQL**
 
 - Solución: Asegúrate de que XAMPP esté ejecutándose y MySQL esté iniciado
-
-## Contribución
-
-1. Crea un branch para tu feature
-2. Haz commit de tus cambios
-3. Push al branch
-4. Crea un Pull Request
-
-## Licencia
-
-Este proyecto es para fines educativos - DuocUC 2025
