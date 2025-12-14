@@ -64,8 +64,9 @@ public class SecurityConfig {
                         .requestMatchers("/api/v1/categorias/**").permitAll()
                         .requestMatchers("/api/v1/locations/**").permitAll()
                         .requestMatchers(org.springframework.http.HttpMethod.GET, "/api/v1/blogs/**").permitAll()
+                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/api/v1/blogs").authenticated()
                         .requestMatchers("/doc/swagger-ui.html", "/doc/swagger-ui/**", "/v3/api-docs/**",
-                                "/swagger-ui/**", "/swagger-ui.html")
+                                "/swagger-ui/**", "/swagger-ui.html", "/error")
                         .permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session
