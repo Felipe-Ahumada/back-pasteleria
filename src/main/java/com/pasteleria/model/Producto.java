@@ -44,4 +44,7 @@ public class Producto {
     @JoinColumn(name = "categoria_id", nullable = false)
     @JsonBackReference
     private Categoria categoria;
+
+    @Column(nullable = false)
+    private Boolean activo = true;
 }

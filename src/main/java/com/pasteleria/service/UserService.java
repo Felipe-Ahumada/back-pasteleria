@@ -41,6 +41,10 @@ public class UserService {
         User user = userRepository.findByCorreo(loginRequest.getEmail())
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
 
+        if (Boolean.FALSE.equals(user.getActivo())) {
+            throw new RuntimeException("Usuario bloqueado");
+        }
+
         // Generate JWT token
         String token = jwtUtil.generateToken(user.getCorreo(), user.getTipoUsuario().name());
 
@@ -102,8 +106,15 @@ public class UserService {
         user.setRegionNombre(userDetails.getRegionNombre());
         user.setComuna(userDetails.getComuna());
         user.setDireccion(userDetails.getDireccion());
+        if (userDetails.getAvatarUrl() != null) {
+             // Avatar update logic handled below
+        }
         user.setAvatarUrl(userDetails.getAvatarUrl());
         user.setCodigoDescuento(userDetails.getCodigoDescuento());
+
+        if (userDetails.getActivo() != null) {
+            user.setActivo(userDetails.getActivo());
+        }
 
         if (userDetails.getPassword() != null && !userDetails.getPassword().isEmpty()) {
             user.setPassword(passwordEncoder.encode(userDetails.getPassword()));

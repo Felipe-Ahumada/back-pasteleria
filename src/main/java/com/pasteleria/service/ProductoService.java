@@ -42,6 +42,7 @@ public class ProductoService {
         producto.setStock(productoDetails.getStock());
         producto.setStockCritico(productoDetails.getStockCritico());
         producto.setCategoria(productoDetails.getCategoria());
+        producto.setActivo(productoDetails.getActivo());
 
         return productoRepository.save(producto);
     }

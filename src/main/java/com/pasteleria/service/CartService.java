@@ -40,9 +40,26 @@ public class CartService {
     @Transactional
     public Cart addItemToCart(Long userId, String productId, int quantity, String message) {
         Cart cart = getCartByUserId(userId);
-        Long prodId = Long.parseLong(productId);
-        Producto product = productoRepository.findById(prodId)
-                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+
+        // Intentar buscar por código de producto (String)
+        Optional<Producto> productOpt = productoRepository.findByCodigoProducto(productId);
+        Producto product;
+
+        if (productOpt.isPresent()) {
+            product = productOpt.get();
+        } else {
+            // Si no se encuentra por código, intentar por ID numérico (fallback)
+            try {
+                Long prodId = Long.parseLong(productId);
+                product = productoRepository.findById(prodId)
+                        .orElseThrow(() -> new RuntimeException("Producto no encontrado con ID: " + productId));
+            } catch (NumberFormatException e) {
+                throw new RuntimeException("Producto no encontrado. Código inválido: " + productId);
+            }
+        }
+        
+        Long prodId = product.getId();
+
 
         String msg = message != null ? message.trim() : "";
 

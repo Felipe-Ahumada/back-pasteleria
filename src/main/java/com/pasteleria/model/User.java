@@ -55,6 +55,9 @@ public class User {
     @Column(nullable = false)
     private String password;
 
+    @Lob
+    @Column(name = "profile_image", columnDefinition = "LONGTEXT")
+    @com.fasterxml.jackson.annotation.JsonProperty("avatarUrl")
     private String avatarUrl;
 
     @CreationTimestamp
